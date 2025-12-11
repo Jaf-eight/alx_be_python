@@ -13,19 +13,18 @@ class Book:
 
 
 class PrintBook(Book):
-    def __init__(self, title, author, year, pages, publisher=None):
+    def __init__(self, title, author, year, page_count, publisher=None):
         super().__init__(title, author, year)
-        self.pages = int(pages)
+        self.page_count = int(page_count)  # ensure literal 'page_count' and 'self.page_count'
         self.publisher = publisher if publisher is not None else ""
 
     def __str__(self):
-        # Keep a simple, deterministic format for graders
         base = super().__str__()
-        return f"{base} | {self.pages} pages"
+        return f"{base} | {self.page_count} pages"
 
     def __repr__(self):
         return (
-            f"PrintBook('{self.title}', '{self.author}', {self.year}, {self.pages}, "
+            f"PrintBook('{self.title}', '{self.author}', {self.year}, {self.page_count}, "
             f"{repr(self.publisher)})"
         )
 
