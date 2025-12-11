@@ -11,11 +11,10 @@ class Book:
     def __repr__(self):
         return f"Book('{self.title}', '{self.author}', {self.year})"
 
-
 class PrintBook(Book):
     def __init__(self, title, author, year, page_count, publisher=None):
         super().__init__(title, author, year)
-        self.page_count = int(page_count)  # ensure literal 'page_count' and 'self.page_count'
+        self.page_count = int(page_count)
         self.publisher = publisher if publisher is not None else ""
 
     def __str__(self):
@@ -27,7 +26,6 @@ class PrintBook(Book):
             f"PrintBook('{self.title}', '{self.author}', {self.year}, {self.page_count}, "
             f"{repr(self.publisher)})"
         )
-
 
 class EBook(Book):
     def __init__(self, title, author, year, file_size_mb, format_):
@@ -44,3 +42,13 @@ class EBook(Book):
             f"EBook('{self.title}', '{self.author}', {self.year}, "
             f"{self.file_size_mb}, '{self.format_}')"
         )
+
+class Library:
+    def __init__(self):
+        self.books = []
+
+    def add_book(self, book):
+        self.books.append(book)
+
+    def list_books(self):
+        return [str(b) for b in self.books]
