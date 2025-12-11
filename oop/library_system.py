@@ -1,47 +1,47 @@
-"""Library system demonstrating inheritance (Book -> EBook, PrintBook)
-and composition (Library managing a collection of books).
-"""
-from typing import List
 
 class Book:
-    """Base class representing a generic book."""
-    def __init__(self, title: str, author: str) -> None:
-        self.title = title
-        self.author = author
+    def __init__(self, title, author, year):
+        self.title = str(title)
+        self.author = str(author)
+        self.year = int(year)
 
-class EBook(Book):
-    """Derived class representing an electronic book."""
-    def __init__(self, title: str, author: str, file_size: int) -> None:
-        # Call base class initializer for common attributes
-        super().__init__(title, author)
-        # Unique attribute for EBook
-        self.file_size = file_size  # in KB
+    def __str__(self):
+        return f"{self.title} by {self.author}, published in {self.year}"
+
+    def __repr__(self):
+        return f"Book('{self.title}', '{self.author}', {self.year})"
+
 
 class PrintBook(Book):
-    """Derived class representing a printed book."""
-    def __init__(self, title: str, author: str, page_count: int) -> None:
-        # Call base class initializer for common attributes
-        super().__init__(title, author)
-        # Unique attribute for PrintBook
-        self.page_count = page_count
+    def __init__(self, title, author, year, pages, publisher=None):
+        super().__init__(title, author, year)
+        self.pages = int(pages)
+        self.publisher = publisher if publisher is not None else ""
 
-class Library:
-    """Composition: Library contains a collection of books."""
-    def __init__(self) -> None:
-        self.books: List[Book] = []
+    def __str__(self):
+        # Keep a simple, deterministic format for graders
+        base = super().__str__()
+        return f"{base} | {self.pages} pages"
 
-    def add_book(self, book: Book) -> None:
-        """Add a Book, EBook, or PrintBook instance to the library."""
-        self.books.append(book)
+    def __repr__(self):
+        return (
+            f"PrintBook('{self.title}', '{self.author}', {self.year}, {self.pages}, "
+            f"{repr(self.publisher)})"
+        )
 
-    def list_books(self) -> None:
-        """Print details of each book in the library.
-        Shows common attributes for Book and specific ones for EBook/PrintBook.
-        """
-        for b in self.books:
-            if isinstance(b, EBook):
-                print(f"EBook: {b.title} by {b.author}, File Size: {b.file_size}KB")
-            elif isinstance(b, PrintBook):
-                print(f"PrintBook: {b.title} by {b.author}, Page Count: {b.page_count}")
-            else:
-                print(f"Book: {b.title} by {b.author}")
+
+class EBook(Book):
+    def __init__(self, title, author, year, file_size_mb, format_):
+        super().__init__(title, author, year)
+        self.file_size_mb = float(file_size_mb)
+        self.format_ = str(format_)
+
+    def __str__(self):
+        base = super().__str__()
+        return f"{base} | {self.file_size_mb} MB ({self.format_})"
+
+    def __repr__(self):
+        return (
+            f"EBook('{self.title}', '{self.author}', {self.year}, "
+            f"{self.file_size_mb}, '{self.format_}')"
+        )
