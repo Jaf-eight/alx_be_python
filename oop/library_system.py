@@ -1,3 +1,4 @@
+
 class Book:
     def __init__(self, title, author, year=None):
         self.title = str(title)
@@ -5,7 +6,6 @@ class Book:
         self.year = None if year is None else int(year)
 
     def __str__(self):
-        # Keep it simple so callers can prepend 'Book: ' etc.
         return f"{self.title} by {self.author}"
 
     def __repr__(self):
