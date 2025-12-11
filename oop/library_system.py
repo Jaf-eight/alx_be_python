@@ -1,47 +1,51 @@
-
 class Book:
-    def __init__(self, title, author, year):
+    def __init__(self, title, author, year=None):
         self.title = str(title)
         self.author = str(author)
-        self.year = int(year)
+        self.year = None if year is None else int(year)
 
     def __str__(self):
-        return f"{self.title} by {self.author}, published in {self.year}"
+        # Keep it simple so callers can prepend 'Book: ' etc.
+        return f"{self.title} by {self.author}"
 
     def __repr__(self):
+        if self.year is None:
+            return f"Book('{self.title}', '{self.author}')"
         return f"Book('{self.title}', '{self.author}', {self.year})"
 
 class PrintBook(Book):
-    def __init__(self, title, author, year, page_count, publisher=None):
+    def __init__(self, title, author, page_count, year=None, publisher=None):
         super().__init__(title, author, year)
         self.page_count = int(page_count)
         self.publisher = publisher if publisher is not None else ""
 
     def __str__(self):
-        base = super().__str__()
-        return f"{base} | {self.page_count} pages"
+        return f"{self.title} by {self.author}"
 
     def __repr__(self):
-        return (
-            f"PrintBook('{self.title}', '{self.author}', {self.year}, {self.page_count}, "
-            f"{repr(self.publisher)})"
-        )
+        args = [repr(self.title), repr(self.author), str(self.page_count)]
+        if self.year is not None:
+            args.append(str(self.year))
+        if self.publisher:
+            args.append(repr(self.publisher))
+        return f"PrintBook({', '.join(args)})"
 
 class EBook(Book):
-    def __init__(self, title, author, year, file_size_mb, format_):
+    def __init__(self, title, author, file_size, year=None, format_=None):
         super().__init__(title, author, year)
-        self.file_size_mb = float(file_size_mb)
-        self.format_ = str(format_)
+        self.file_size = int(file_size)
+        self.format_ = str(format_) if format_ is not None else ""
 
     def __str__(self):
-        base = super().__str__()
-        return f"{base} | {self.file_size_mb} MB ({self.format_})"
+        return f"{self.title} by {self.author}"
 
     def __repr__(self):
-        return (
-            f"EBook('{self.title}', '{self.author}', {self.year}, "
-            f"{self.file_size_mb}, '{self.format_}')"
-        )
+        args = [repr(self.title), repr(self.author), str(self.file_size)]
+        if self.year is not None:
+            args.append(str(self.year))
+        if self.format_:
+            args.append(repr(self.format_))
+        return f"EBook({', '.join(args)})"
 
 class Library:
     def __init__(self):
